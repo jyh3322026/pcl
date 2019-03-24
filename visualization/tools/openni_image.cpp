@@ -49,7 +49,6 @@
 #include <pcl/visualization/image_viewer.h>
 #include <pcl/io/openni_camera/openni_driver.h>
 #include <pcl/console/parse.h>
-#include <pcl/console/time.h>
 #include <pcl/visualization/mouse_event.h>
 
 using namespace std;
@@ -246,8 +245,8 @@ class Buffer
     }
 
 	private:
-		Buffer (const Buffer&);            // Disabled copy constructor
-		Buffer& operator =(const Buffer&); // Disabled assignment operator
+		Buffer (const Buffer&) = delete;            // Disabled copy constructor
+		Buffer& operator =(const Buffer&) = delete; // Disabled assignment operator
 		
     boost::mutex bmutex_;
 		boost::condition_variable buff_empty_;
@@ -330,7 +329,7 @@ class Writer
       {
         {
           boost::mutex::scoped_lock io_lock (io_mutex);
-          print_info ("Writing remaing %ld clouds in the buffer to disk...\n", buf_.getSize ());
+          print_info ("Writing remaining %ld clouds in the buffer to disk...\n", buf_.getSize ());
         }
         while (!buf_.isEmpty ())
         {
@@ -675,7 +674,7 @@ main (int argc, char ** argv)
   else
     print_highlight ("Using default buffer size of %d frames.\n", buff_size);
 
-  string device_id ("");
+  string device_id;
   OpenNIGrabber::Mode image_mode = OpenNIGrabber::OpenNI_Default_Mode;
   OpenNIGrabber::Mode depth_mode = OpenNIGrabber::OpenNI_Default_Mode;
   

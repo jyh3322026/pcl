@@ -141,8 +141,8 @@ pcl::ShapeContext3DEstimation<PointInT, PointNT, PointOutT>::computePoint (
   const size_t neighb_cnt = searchForNeighbors ((*indices_)[index], search_radius_, nn_indices, nn_dists);
   if (neighb_cnt == 0)
   {
-    for (size_t i = 0; i < desc.size (); ++i)
-      desc[i] = std::numeric_limits<float>::quiet_NaN ();
+    for (float &descriptor : desc)
+      descriptor = std::numeric_limits<float>::quiet_NaN ();
 
     memset (rf, 0, sizeof (rf[0]) * 9);
     return (false);
@@ -263,7 +263,7 @@ pcl::ShapeContext3DEstimation<PointInT, PointNT, PointOutT>::computePoint (
       PCL_ERROR ("Shape Context Error INF!\n");
     if (w != w)
       PCL_ERROR ("Shape Context Error IND!\n");
-    /// Accumulate w into correspondant Bin(j,k,l)
+    /// Accumulate w into correspondent Bin(j,k,l)
     desc[(l*elevation_bins_*radius_bins_) + (k*radius_bins_) + j] += w;
 
     assert (desc[(l*elevation_bins_*radius_bins_) + (k*radius_bins_) + j] >= 0);

@@ -108,7 +108,7 @@ main (int argc, char** argv)
               "         -view_point <x,y,z>       : set the camera viewpoint from where the acquisition will take place\n"
               "         -target_point <x,y,z>     : the target point that the camera should look at (default: 0, 0, 0)\n"
               "         -organized <0|1>          : create an organized, grid-like point cloud of width x height (1), or keep it unorganized with height = 1 (0)\n"
-              "         -noise <0|1>              : add gausian noise (1) or keep the model noiseless (0)\n"
+              "         -noise <0|1>              : add gaussian noise (1) or keep the model noiseless (0)\n"
               "         -noise_std <x>            : use X times the standard deviation\n"
               "");
     return (-1);
@@ -382,13 +382,13 @@ main (int argc, char** argv)
 
     // Noisify each point in the dataset
     // \note: we might decide to noisify along the ray later
-    for (size_t cp = 0; cp < cloud.points.size (); ++cp)
+    for (auto &point : cloud.points)
     {
       // Add noise ?
       switch (noise_model)
       {
         // Gaussian
-        case 1: { cloud.points[cp].x += gaussian_rng (); cloud.points[cp].y += gaussian_rng (); cloud.points[cp].z += gaussian_rng (); break; }
+        case 1: { point.x += gaussian_rng (); point.y += gaussian_rng (); point.z += gaussian_rng (); break; }
       }
     }
 

@@ -52,12 +52,10 @@ pcl::PCA<PointT>::initCompute ()
   if(!Base::initCompute ())
   {
     PCL_THROW_EXCEPTION (InitFailedException, "[pcl::PCA::initCompute] failed");
-    return (false);
   }
   if(indices_->size () < 3)
   {
     PCL_THROW_EXCEPTION (InitFailedException, "[pcl::PCA::initCompute] number of points < 3");
-    return (false);
   }
   
   // Compute mean
@@ -80,7 +78,6 @@ pcl::PCA<PointT>::initCompute ()
     eigenvectors_.col (i) = evd.eigenvectors ().col (2-i);
   }
   // If not basis only then compute the coefficients
-
   if (!basis_only_)
     coefficients_ = eigenvectors_.transpose() * cloud_demean.topRows<3> ();
   compute_done_ = true;
@@ -189,9 +186,9 @@ pcl::PCA<PointT>::project (const PointCloud& input, PointCloud& projection)
     PointT p;
     for (size_t i = 0; i < input.size (); ++i)
     {
-      if (!pcl_isfinite (input[i].x) || 
-          !pcl_isfinite (input[i].y) ||
-          !pcl_isfinite (input[i].z))
+      if (!std::isfinite (input[i].x) || 
+          !std::isfinite (input[i].y) ||
+          !std::isfinite (input[i].z))
         continue;
       project (input[i], p);
       projection.push_back (p);
@@ -231,9 +228,9 @@ pcl::PCA<PointT>::reconstruct (const PointCloud& projection, PointCloud& input)
     PointT p;
     for (size_t i = 0; i < input.size (); ++i)
     {
-      if (!pcl_isfinite (input[i].x) || 
-          !pcl_isfinite (input[i].y) ||
-          !pcl_isfinite (input[i].z))
+      if (!std::isfinite (input[i].x) || 
+          !std::isfinite (input[i].y) ||
+          !std::isfinite (input[i].z))
         continue;
       reconstruct (projection[i], p);
       input.push_back (p);
